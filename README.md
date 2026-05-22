@@ -1,73 +1,104 @@
-# 📡 Capturador IR con ESP32 + AWS Lambda
+# 📺 Control de TV con Alexa + ESP32
 
-Sistema que captura códigos de controles remotos infrarrojos con un ESP32 y los almacena automáticamente en la nube usando AWS Lambda y DynamoDB.
+Sistema que permite controlar un televisor mediante comandos de voz a través de Alexa, usando un ESP32 como emisor infrarrojo (IR) y SinricPro como puente de comunicación.
 
 ---
 
 ## ¿Cómo funciona?
 
-1. El ESP32 detecta una señal infrarroja (IR) de cualquier control remoto
-2. Extrae el protocolo, código HEX y cantidad de bits
-3. Envía los datos por WiFi a una función AWS Lambda
-4. Lambda guarda el registro en una base de datos DynamoDB
+1. Le dices un comando a Alexa ("Alexa, enciende la tele")
+2. Alexa lo envía a SinricPro por internet
+3. SinricPro se comunica con el ESP32 por WiFi
+4. El ESP32 emite la señal infrarroja al televisor
 
 ---
 
 ## 🛠️ Hardware necesario
 
 - Placa ESP32
-- Receptor IR (ej. VS1838B)
+- LED emisor IR (ej. IR333)
+- Resistencia de 100Ω
 - Cable USB para programar
+
+---
+
+## 🔌 Conexión del hardware
+
+| ESP32 | Componente |
+|-------|------------|
+| Pin 19 | LED IR (+) |
+| GND | LED IR (-) con resistencia 100Ω |
+
+---
+
+## 🗣️ Comandos de voz disponibles
+
+| Comando Alexa | Acción |
+|---------------|--------|
+| "Alexa, enciende la tele" | Enciende el TV |
+| "Alexa, apaga la tele" | Apaga el TV |
+| "Alexa, enciende sube volumen" | Sube el volumen continuamente |
+| "Alexa, apaga sube volumen" | Detiene subir volumen |
+| "Alexa, enciende baja volumen" | Baja el volumen continuamente |
+| "Alexa, apaga baja volumen" | Detiene bajar volumen |
 
 ---
 
 ## 📁 Estructura del repositorio
 
 ```
-proyecto-esp32-lambda/
+proyecto-esp32-alexa-tv/
 ├── README.md
-├── esp32/
-│   └── main.ino        # Código para el ESP32
-└── lambda/
-    └── index.py        # Función AWS Lambda
+└── esp32/
+    └── main.ino        # Código principal del ESP32
 ```
 
 ---
 
 ## ⚙️ Configuración
 
-### ESP32
-1. Abre `esp32/main.ino` en Arduino IDE
-2. Cambia estas líneas con tus datos:
+### 1. Librerías necesarias en Arduino IDE
+
+| Librería | Cómo instalarla |
+|----------|----------------|
+| SinricPro | Gestor de librerías → busca `SinricPro` |
+| IRremoteESP8266 | Gestor de librerías → busca `IRremoteESP8266` |
+| WiFi | Ya incluida con ESP32 |
+
+### 2. Credenciales
+
+Abre `esp32/main.ino` y edita esta sección con tus datos:
+
 ```cpp
-const char* ssid     = "TU_WIFI";
-const char* password = "TU_CONTRASEÑA";
-const char* serverURL = "TU_URL_API_GATEWAY";
+#define WIFI_SSID     "TU_WIFI"
+#define WIFI_PASSWORD "TU_CONTRASEÑA"
+
+#define APP_KEY    "TU_APP_KEY_DE_SINRICPRO"
+#define APP_SECRET "TU_APP_SECRET_DE_SINRICPRO"
 ```
-3. Instala la librería **IRremoteESP8266** desde el gestor de librerías
-4. Carga el código en tu ESP32
 
-### AWS
-1. Crea una tabla en **DynamoDB** llamada `codigos-ir` con clave `id`
-2. Crea una función **Lambda** con el código de `lambda/index.py`
-3. Asigna el permiso **AmazonDynamoDBFullAccess** al rol de Lambda
-4. Crea una **API Gateway** HTTP con método POST en `/guardar`
+> ⚠️ Nunca subas tus claves reales a GitHub.
 
----
+### 3. Cuenta en SinricPro
 
-## 🗄️ Datos guardados en DynamoDB
+1. Regístrate en [sinric.pro](https://sinric.pro)
+2. Crea 3 dispositivos de tipo **Switch**:
+   - `Tele` → copia el Device ID en `DEVICE_TV`
+   - `Sube Volumen` → copia el ID en `DEVICE_VOL_UP`
+   - `Baja Volumen` → copia el ID en `DEVICE_VOL_DOWN`
+3. Copia tu **App Key** y **App Secret** del dashboard
 
-| Campo | Descripción |
-|-------|-------------|
-| `id` | Identificador único |
-| `protocolo` | Protocolo IR (NEC, SONY, etc.) |
-| `hex` | Código en hexadecimal |
-| `bits` | Cantidad de bits de la señal |
-| `timestamp` | Fecha y hora de captura |
+### 4. Vincular con Alexa
+
+1. Abre la app de Alexa
+2. Ve a **Skills** → busca **SinricPro**
+3. Activa el skill e inicia sesión con tu cuenta SinricPro
+4. Alexa detectará los 3 dispositivos automáticamente
 
 ---
 
-## 📚 Librerías utilizadas
+## 📚 Tecnologías utilizadas
 
-- [IRremoteESP8266](https://github.com/crankyoldgit/IRremoteESP8266)
-- AWS SDK (boto3) — incluido en Lambda por defecto
+- [SinricPro](https://sinric.pro) — puente Alexa ↔ ESP32
+- [IRremoteESP8266](https://github.com/crankyoldgit/IRremoteESP8266) — emisión de señales IR
+- Arduino IDE con soporte ESP32
