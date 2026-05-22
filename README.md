@@ -102,3 +102,20 @@ Abre `esp32/main.ino` y edita esta sección con tus datos:
 - [SinricPro](https://sinric.pro) — puente Alexa ↔ ESP32
 - [IRremoteESP8266](https://github.com/crankyoldgit/IRremoteESP8266) — emisión de señales IR
 - Arduino IDE con soporte ESP32
+## 📊 Tabla de códigos IR capturados
+
+| Dispositivo | Función | Protocolo | Código HEX | Bits |
+|-------------|---------|-----------|------------|------|
+| TV | Power | NEC | 0x20250AF | 32 |
+| TV | Vol + | NEC | 0x202A857 | 32 |
+| TV | Vol - | NEC | 0x20238C7 | 32 |
+
+---
+
+## ⚙️ Funcionamiento del sistema
+
+1. Alexa recibe el comando de voz del usuario
+2. Sinric Pro envía la instrucción al ESP32 por internet
+3. El ESP32 procesa la orden recibida
+4. El LED IR transmite el código correspondiente al televisor
+5. El TV responde como si fuera el control remoto original
