@@ -47,11 +47,25 @@ Sistema que permite controlar un televisor mediante comandos de voz a través de
 ## 📁 Estructura del repositorio
 
 ```
-proyecto-esp32-alexa-tv/
+IR_ESP32_ALEXA/
 ├── README.md
 └── esp32/
-    └── main.ino        # Código principal del ESP32
+    ├── main.ino              # Código principal: control TV con Alexa
+    ├── capturador_ir.ino     # Código para capturar códigos IR
+    └── imagenes/
+        ├── circuito1.jpg
+        ├── circuito1.1.jpg
+        └── circuito 1.2.jpg
 ```
+
+---
+
+## 📂 Descripción de archivos
+
+| Archivo | Descripción |
+|---------|-------------|
+| `main.ino` | Control del TV con comandos de voz via Alexa y SinricPro |
+| `capturador_ir.ino` | Captura y decodifica códigos IR de cualquier control remoto |
 
 ---
 
@@ -97,11 +111,6 @@ Abre `esp32/main.ino` y edita esta sección con tus datos:
 
 ---
 
-## 📚 Tecnologías utilizadas
-
-- [SinricPro](https://sinric.pro) — puente Alexa ↔ ESP32
-- [IRremoteESP8266](https://github.com/crankyoldgit/IRremoteESP8266) — emisión de señales IR
-- Arduino IDE con soporte ESP32
 ## 📊 Tabla de códigos IR capturados
 
 | Dispositivo | Función | Protocolo | Código HEX | Bits |
@@ -115,12 +124,29 @@ Abre `esp32/main.ino` y edita esta sección con tus datos:
 ## ⚙️ Funcionamiento del sistema
 
 1. Alexa recibe el comando de voz del usuario
-2. Sinric Pro envía la instrucción al ESP32 por internet
+2. SinricPro envía la instrucción al ESP32 por internet
 3. El ESP32 procesa la orden recibida
 4. El LED IR transmite el código correspondiente al televisor
 5. El TV responde como si fuera el control remoto original
+
+---
+
 ## 📷 Circuito armado
 
 ![Circuito 1](esp32/imagenes/circuito1.jpg)
 ![Circuito 1.1](esp32/imagenes/circuito1.1.jpg)
 ![Circuito 1.2](esp32/imagenes/circuito%201.2.jpg)
+
+---
+
+## 📚 Tecnologías utilizadas
+
+- [SinricPro](https://sinric.pro) — puente Alexa ↔ ESP32
+- [IRremoteESP8266](https://github.com/crankyoldgit/IRremoteESP8266) — emisión de señales IR
+- Arduino IDE con soporte ESP32
+
+---
+
+## 📝 Conclusión
+
+Proyecto desarrollado como aplicación práctica de automatización IoT, integrando un ESP32 con Amazon Alexa mediante SinricPro para el control remoto de un televisor a través de señales infrarrojas y comandos de voz.
