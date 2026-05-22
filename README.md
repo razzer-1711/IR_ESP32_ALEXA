@@ -119,3 +119,8 @@ Abre `esp32/main.ino` y edita esta sección con tus datos:
 3. El ESP32 procesa la orden recibida
 4. El LED IR transmite el código correspondiente al televisor
 5. El TV responde como si fuera el control remoto original
+## 📷 Circuito armado
+
+![Circuito 1](esp32/circuito%201.jpg)
+![Circuito 2](esp32/circuito%201.2.jpg)
+![Circuito 3](esp32/circuito1.1.jpg)
