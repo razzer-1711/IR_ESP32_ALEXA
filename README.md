@@ -121,6 +121,6 @@ Abre `esp32/main.ino` y edita esta sección con tus datos:
 5. El TV responde como si fuera el control remoto original
 ## 📷 Circuito armado
 
-![Circuito 1](esp32/circuito%201.jpg)
-![Circuito 2](esp32/circuito%201.2.jpg)
-![Circuito 3](esp32/circuito1.1.jpg)
+![Circuito 1](esp32/imagenes/circuito1.jpg)
+![Circuito 1.1](esp32/imagenes/circuito1.1.jpg)
+![Circuito 1.2](esp32/imagenes/circuito%201.2.jpg)
